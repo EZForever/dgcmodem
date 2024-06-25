@@ -22,8 +22,8 @@ binary-indep: checkroot build
 
 binary-arch: checkroot build
 	$(checkdir)
-	-rm -rf debian/tmp
-	install -d debian/tmp
+	-rm -rf debian/$(package)
+	install -d debian/$(package)
 ifneq ($(TARGET_KERNEL),)
 	@MODS_DIR=binaries/linux-$(TARGET_KERNEL) ; \
 	case "$(TARGET_KERNEL)" in \
@@ -45,18 +45,18 @@ ifneq ($(TARGET_KERNEL),)
 	) || exit $$?
 endif
 	$(MAKE) all
-	$(MAKE) ROOT=`pwd`/debian/tmp install
+	$(MAKE) ROOT=`pwd`/debian/$(package) install
 ifneq ($(TARGET_KERNEL),)
 	@PWD="`pwd`"; \
-	rm -fr "$${PWD}/debian/tmp/@CNXTLIBDIR@/modules/include" "$${PWD}/debian/tmp/@CNXTLIBDIR@/modules/imported"; \
-	find "$${PWD}/debian/tmp/@CNXTLIBDIR@/modules" -maxdepth 3 ! -name "COPYING" ! -name "*o" -type f -exec rm -f {} \;
+	rm -fr "$${PWD}/debian/$(package)/@CNXTLIBDIR@/modules/include" "$${PWD}/debian/$(package)/@CNXTLIBDIR@/modules/imported"; \
+	find "$${PWD}/debian/$(package)/@CNXTLIBDIR@/modules" -maxdepth 3 ! -name "COPYING" ! -name "*o" -type f -exec rm -f {} \;
 endif
 	rm -rf debian/@CNXTTARGET@modem-doc
 ifneq ($(CNXTDRIVER),dgc)
 	echo "./usr/share/doc/@CNXTTARGET@modem/100498D_RM_HxF_Released.pdf" > debian/@CNXTTARGET@modem-doc.files
 endif
 	# remove duplicate LICENSE
-	rm -f debian/tmp/usr/lib/@CNXTTARGET@modem/LICENSE
+	rm -f debian/$(package)/usr/lib/@CNXTTARGET@modem/LICENSE
 ifeq ($(CNXTDRIVER),dgc)
 	dh_installdocs BUGS CHANGES INSTALL LICENSE README
 else
@@ -66,10 +66,10 @@ endif
 	dh_installdeb
 	dh_compress
 	dh_md5sums
-	dpkg-gencontrol -p@CNXTTARGET@modem -isp
-	chown -R root.root debian/tmp
-#	chmod -R go=rX debian/tmp
-	dpkg --build debian/tmp ..
+	dpkg-gencontrol -p@CNXTTARGET@modem -Pdebian/$(package)
+	chown -R root:root debian/$(package)
+#	chmod -R go=rX debian/$(package)
+	dpkg --build debian/$(package) ..
 
 define checkdir
 	test -f debian/rules

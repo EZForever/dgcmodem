@@ -120,7 +120,7 @@ TARPKG=$(CNXTTARGET)modem-$(CNXTLINUXVERSION).tar.gz
 tardist: clean
 	$(MAKE) $(TARPKG)
 
-CNXTTEMPDIST:=/var/run/$(CNXTTARGET)dist-$(shell echo $$$$)/$(CNXTTARGET)modem-$(CNXTLINUXVERSION)
+CNXTTEMPDIST:=/tmp/$(CNXTTARGET)dist-$(shell echo $$$$)/$(CNXTTARGET)modem-$(CNXTLINUXVERSION)
 
 $(TARPKG): $(CNXTTARGET)modem.spec
 	rm -rf $(CNXTTEMPDIST)
@@ -207,7 +207,7 @@ ifneq ($(IMPORTED_ARCH),powerpc)
 -include $(DISTROKERNHDRSDIR)/incavail.mak
 endif
 
-DEBFILES= $(patsubst %, debian/%, rules control changelog copyright preinst postinst prerm postrm)
+DEBFILES= $(patsubst %, debian/%, rules control compat changelog copyright preinst postinst prerm postrm)
 DEBCLEAN= $(patsubst %, debian/%, tmp files $(CNXTTARGET)modem-doc* README.tmp target.mak) build
 
 debname = $(2)/$(1)_$(CNXTLINUXVERSION_DEBIAN)$(subst _kgeneric,,_k$(subst -,_,$(3)))$(subst _generic,,_$(d))_$(2).deb

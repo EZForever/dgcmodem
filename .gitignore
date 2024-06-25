@@ -5,8 +5,15 @@
 
 # Compiled Dynamic libraries
 *.so
+*.ko
 
 # Compiled Static libraries
 *.lai
 *.la
 *.a
+
+# Package builds
+/debian
+!/debian/*.in
+/packages/**/*
+

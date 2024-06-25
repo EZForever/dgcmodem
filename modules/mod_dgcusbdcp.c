@@ -165,7 +165,7 @@ dgcUsbWrite(PUSBOSHAL pUsbOsHal, unsigned char *data, size_t len)
 	unsigned char *buffer;
 	int actual_length = 0;
 
-	dbg ("%s: data=%p len=%d", __FUNCTION__, data, len);
+	dbg ("%s: data=%p len=%zu", __FUNCTION__, data, len);
 
 	if (!(buffer = (unsigned char *)__get_free_page(GFP_KERNEL))) {
 		err("could not get a buffer for dgcUsbWrite (len=%d)\n", (int)len);

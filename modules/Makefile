@@ -69,10 +69,10 @@ CNXT_SND_MODS_DIR := $(patsubst %/extra,%/updates,$(CNXT_MODS_DIR))
 
 # On SuSE 9.0 and up as well as Debian 2.6.29-1-* kernels and up, CNXT_KERNELSRC points to an incomplete kernel source
 # directory and some include files are not available in this tree
-DIFF_OBJ_TREE := $(shell if grep -q '^\(KERNELSRC\)\|\(MAKEARGS\) ' "${CNXT_KERNELSRC}/Makefile" 2>/dev/null && [ -d "${CNXT_KERNELSRC}" ]; then echo "yes"; else echo "no"; fi)
+DIFF_OBJ_TREE := $(shell if grep -q '^\(KERNELSRC\)\|\(MAKEARGS\)\|\(include\) ' "${CNXT_KERNELSRC}/Makefile" 2>/dev/null && [ -d "${CNXT_KERNELSRC}" ]; then echo "yes"; else echo "no"; fi)
 
 ifeq ($(DIFF_OBJ_TREE),yes)
-REAL_KERNELSRC := $(shell awk '{ if ($$1 == "MAKEARGS" && $$3 == "-C") print $$4; if ($$1 == "KERNELSRC") print $$3; }' "${CNXT_KERNELSRC}/Makefile")
+REAL_KERNELSRC := $(shell awk '{ if ($$1 == "MAKEARGS" && $$3 == "-C") print $$4; if ($$1 == "KERNELSRC") print $$3; if ($$1 == "include") system("dirname " $$2); }' "${CNXT_KERNELSRC}/Makefile")
 # Deal with a relative path
 REAL_KERNELSRC := $(if $(filter ../%, $(REAL_KERNELSRC)), $(CNXT_KERNELSRC)/,)$(REAL_KERNELSRC)
 else
