@@ -94,8 +94,7 @@ endif
 # Configure compiler (on some systems, kgcc must be used to compile kernel code)
 #
 #CC= kgcc
-#CC= gcc
-CC := $(shell $(TOP)/modules/kernelcompiler.sh $(KERNELVER) $(CNXT_KERNELSRC))
+CC= gcc
 
 FOUND_PCI_DEV_SLOT_NAME := $(shell grep -q '[ 	]slot_name' ${REAL_KERNELSRC}/include/linux/pci.h 2>/dev/null && echo -DFOUND_PCI_DEV_SLOT_NAME)
 
