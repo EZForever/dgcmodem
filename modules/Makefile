@@ -102,7 +102,7 @@ FOUND_DEVFS := $(shell [ -e "${REAL_KERNELSRC}/include/linux/devfs_fs_kernel.h" 
 
 EXTRA_CFLAGS+= $(FOUND_PCI_DEV_SLOT_NAME) $(FOUND_DEVFS)
 
-KBUILD_SUPPORTED := $(shell test -e ${CNXT_KERNELSRC}/scripts/kconfig && echo yes || echo no)
+KBUILD_SUPPORTED := $(shell test -e ${REAL_KERNELSRC}/scripts/kconfig && echo yes || echo no)
 
 ifeq ($(KBUILD_SUPPORTED),yes)
 KO= ko
